@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MyBlog.Models.Category>
+
+@{
+    ViewData["Title"] = "Полный список категорий";
+}
+
+<h1>Список</h1>
+
+<p>
+    <a asp-action="Create">Создать новую</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+              Категории
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Детали</a>
+                @if (User.IsInRole("SuperAdmin"))
+                {
+            <span>|</span>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                                                    <span>|</span>
+                                                                        <a asp-action="Delete" asp-route-id="@item.Id"> Удалить </a>}
+
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

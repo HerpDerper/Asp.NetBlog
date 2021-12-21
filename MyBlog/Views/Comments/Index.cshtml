@@ -1,0 +1,64 @@
+﻿@model IEnumerable<MyBlog.Models.Comment>
+
+@{
+    ViewData["Title"] = "Комментарии";
+}
+
+<h1>Комментарии</h1>
+<h5>Пост -  @ViewBag.Post.Title</h5>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        <a asp-action="Create" asp-route-postId="@ViewBag.Post.Id">Новый комментарий</a>
+    </p>    
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+              Текст
+            </th>
+            <th>
+                Дата публикации
+            </th>
+            <th>
+                Время публикации
+            </th>
+            <th>
+              Автор
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublishDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublishTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUserName)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Детали</a>
+                @if (User.Identity.Name == item.ApplicationUserName || User.IsInRole("SuperAdmin"))
+                {
+                    <span>|</span>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                    <span>|</span>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

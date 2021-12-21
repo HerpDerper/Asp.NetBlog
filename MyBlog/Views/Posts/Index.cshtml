@@ -1,0 +1,55 @@
+﻿@model MyBlog.ViewModels.PostsViewModel
+@addTagHelper *, MyBlog
+
+@{ ViewData["Title"] = "Посты"; }
+
+<h1>Посты</h1>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        <a asp-action="Create">Написать новый</a>
+    </p>
+}
+<form method="get">
+    <div class="form-inline form-group">
+        <label class="control-label"> Категории </label>
+        &nbsp;&nbsp;
+        <select name="categoryId" asp-items="Model.Categories" class="form-control"></select>
+        &nbsp;&nbsp;&nbsp;
+        <input type="submit" value="Выбрать" class="btn btn-primary" />
+    </div>
+</form>
+
+@foreach (var item in Model.Posts)
+{
+<div class="card card_margin">
+    <div class="card-header">
+        @Html.DisplayFor(modelItem => item.PublishDate)
+        @Html.DisplayFor(modelItem => item.PublishTime)
+    </div>
+    <div class="card-body">
+        <img src="@Html.DisplayFor(modelItem => item.ImagePath)" alt="..." class="post_image" />
+        <h4 class="card-title">@Html.DisplayFor(modelItem => item.UserName)</h4>
+        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+        <h6 class="card-title">Категория: @Html.DisplayFor(modelItem => item.Category.Name)</h6>
+        <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+        <p class="card-text">@Html.DisplayFor(modelItem => item.Content)</p>
+        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Детали</a>
+    </div>
+    <div class="card-footer text-muted">
+        |
+        <a asp-action="Index" asp-controller="Comments" asp-route-id="@item.Id">Комментарии</a> 
+        |
+        @if (User.IsInRole("SuperAdmin") || User.Identity.Name == item.UserName)
+        {
+<a asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+<span>|</span>
+<a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+<span>|</span>
+        }
+    </div>
+</div>}
+
+<br />
+
+<page-link page-model="Model.Paginator" page-action="Index"></page-link>

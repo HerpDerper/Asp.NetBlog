@@ -1,0 +1,35 @@
+﻿@model IEnumerable<MyBlog.Models.Post>
+@{ ViewData["Title"] = "Home Page"; }
+
+<form method="get" asp-action="Index">
+    <div class="form-inline form-group">
+        <label class="control-label">Тема:</label>
+        <input type="text" name="title" class="form-control" />
+        <label class="control-label">Описание:</label>
+        <input type="text" name="desc" class="form-control" />
+        <input type="submit" value="Поиск" class="btn btn-success" />
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Тема
+            </th>
+            <th>
+               Описание
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+       @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Description</td>
+            <td><a asp-action="Index" asp-controller="Comments" asp-route-id="@item.Id">Комментарии</a></td>
+            <td> <a asp-action="Details" asp-controller="Posts" asp-route-id="@item.Id" class="btn btn-primary">Детали</a></td>
+        </tr>
+}
+</table>

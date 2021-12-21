@@ -1,0 +1,51 @@
+﻿@model MyBlog.Models.Comment
+
+@{
+    ViewData["Title"] = "Детали комментария";
+}
+
+<h1>Детали</h1>
+
+<div>
+    <h4>Комментарий</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+        Текст
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt class = "col-sm-2">
+        Дата публикации
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PublishDate)
+        </dd>
+        <dt class = "col-sm-2">
+          Время публикации
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PublishTime)
+        </dd>
+        <dt class = "col-sm-2">
+          Автор
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ApplicationUserName)
+        </dd>
+        <dt class = "col-sm-2">
+           Пост
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Post.Title)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (User.Identity.Name == Model.ApplicationUserName || User.IsInRole("SuperAdmin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Изменить | </a> 
+    }
+    <a asp-action="Index" asp-route-id="@Model.PostId">Назад к списку</a>
+</div>

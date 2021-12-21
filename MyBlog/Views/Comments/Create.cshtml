@@ -1,0 +1,36 @@
+﻿@model MyBlog.Models.Comment
+
+@{
+    ViewData["Title"] = "Новый комментарий";
+}
+
+<h1>Новый комментарий</h1>
+<h5>Пост - @ViewBag.Post.Title</h5>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <input asp-for="PostId" type="hidden" value="@ViewBag.Post.Id" />
+            <input asp-for="ApplicationUserName" type="hidden" value="@User.Identity.Name" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Текст</label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Написать" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад к списку</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
